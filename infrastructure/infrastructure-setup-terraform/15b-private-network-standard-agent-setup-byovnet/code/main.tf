@@ -20,6 +20,10 @@ resource "random_string" "unique" {
 resource "azurerm_storage_account" "storage_account" {
   provider = azurerm.workload_subscription
 
+  depends_on = [
+    azurerm_resource_group.resources
+  ]
+
   name                = "aifoundry${random_string.unique.result}storage"
   resource_group_name = var.resource_group_name_resources
   location            = var.location
@@ -46,6 +50,10 @@ resource "azurerm_storage_account" "storage_account" {
 ##
 resource "azurerm_cosmosdb_account" "cosmosdb" {
   provider = azurerm.workload_subscription
+
+  depends_on = [
+    azurerm_resource_group.resources
+  ]
 
   name                = "aifoundry${random_string.unique.result}cosmosdb"
   location            = var.location
@@ -81,6 +89,10 @@ resource "azurerm_cosmosdb_account" "cosmosdb" {
 ##
 resource "azapi_resource" "ai_search" {
   provider = azapi.workload_subscription
+
+  depends_on = [
+    azurerm_resource_group.resources
+  ]
 
   type                      = "Microsoft.Search/searchServices@2025-05-01"
   name                      = "aifoundry${random_string.unique.result}search"
@@ -128,6 +140,12 @@ resource "azapi_resource" "ai_search" {
 ##
 resource "azapi_resource" "ai_foundry" {
   provider = azapi.workload_subscription
+
+  depends_on = [
+    azurerm_resource_group.resources,
+    azurerm_subnet.agent,
+    azurerm_subnet.private_endpoint
+  ]
 
   type                      = "Microsoft.CognitiveServices/accounts@2025-06-01"
   name                      = "aifoundry${random_string.unique.result}"

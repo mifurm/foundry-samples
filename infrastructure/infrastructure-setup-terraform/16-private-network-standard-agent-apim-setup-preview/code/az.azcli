@@ -1,0 +1,2 @@
+export ARM_SUBSCRIPTION_ID="dbc090f1-6bbf-48bc-867e-8fb709cae3e7"
+terraform apply
